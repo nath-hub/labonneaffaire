@@ -11,7 +11,7 @@ use Illuminate\Support\Facades\Auth;
 class AuthController extends Controller
 {
     /**
-     * @OA\Get(
+     * @OA\Post(
      *      path="/api/login",
      *      operationId="login",
      *      tags={"User"},

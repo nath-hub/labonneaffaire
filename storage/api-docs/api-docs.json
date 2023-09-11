@@ -14,8 +14,8 @@
     },
     "paths": {
         "/users/{user}": {},
-        "api/login": {
-            "get": {
+        "/api/login": {
+            "post": {
                 "tags": [
                     "User"
                 ],
@@ -111,7 +111,7 @@
                 }
             }
         },
-        "api/store": {
+        "/api/users": {
             "post": {
                 "tags": [
                     "User"
@@ -178,19 +178,19 @@
                                         "description": "votre role",
                                         "type": "string",
                                         "format": "string",
-                                        "example": "simple utilisateur"
+                                        "example": "USER"
                                     },
                                     "state": {
                                         "description": "votre etat",
                                         "type": "string",
                                         "format": "string",
-                                        "example": "actif/inactif"
+                                        "example": "ACTIF"
                                     },
                                     "birth_date": {
                                         "description": "votre date de naissance",
                                         "type": "string",
                                         "format": "string",
-                                        "example": "12/09/2023"
+                                        "example": "2023-09-11"
                                     },
                                     "name_enterprise": {
                                         "description": "nom de votreentreprise",
@@ -298,7 +298,7 @@
                 }
             }
         },
-        "api/show/{id}": {
+        "/api/users/{id}": {
             "get": {
                 "tags": [
                     "User"
