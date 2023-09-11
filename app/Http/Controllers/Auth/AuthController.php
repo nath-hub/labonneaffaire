@@ -12,7 +12,7 @@ class AuthController extends Controller
 {
     /**
      * @OA\Get(
-     *      path="api/login",
+     *      path="/api/login",
      *      operationId="login",
      *      tags={"User"},
      *      summary="login",
@@ -102,7 +102,7 @@ class AuthController extends Controller
             'code' => 401,
             'error' => 'invalid_client',
             'message' => 'Client authenfication failed',
-        ], 401);
+        ], 401); 
     }
 
     /**
