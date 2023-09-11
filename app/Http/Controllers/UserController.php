@@ -27,7 +27,7 @@ class UserController extends Controller
 
     /**
      * @OA\Post(
-     *      path="/api/store",
+     *      path="/api/users",
      *      operationId="store",
      *      tags={"User"},
      *      summary="Register",
@@ -104,7 +104,7 @@ class UserController extends Controller
 
     /**
      * @OA\Get(
-     *     path="/api/show/{id}",
+     *     path="/api/users/{id}",
      *      operationId="show",
      *      tags={"User"},
      *      summary="Get User",
