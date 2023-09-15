@@ -55,7 +55,7 @@ class UserPolicy
      */
     public function update(User $user, User $model)
     {
-        //
+        $user->id === $model->user;
     }
 
     /**

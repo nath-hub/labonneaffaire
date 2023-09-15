@@ -13,7 +13,7 @@ class UpdateUserRequest extends FormRequest
      */
     public function authorize()
     {
-        return false;
+        return true;
     }
 
     /**
@@ -24,7 +24,20 @@ class UpdateUserRequest extends FormRequest
     public function rules()
     {
         return [
-            //
+            "first_name" => "sometimes|required|string",
+            "last_name" => "sometimes|required|string",
+            "country" => "sometimes|required|string",
+            "town" =>"sometimes|required|string",
+            "type_account" => "sometimes|required|string",
+
+            "birth_date" => "string",
+
+            "name_enterprise" => "sometimes|required_if:type_account, INTERPRISE",
+            "siren" => "sometimes|required_if:type_account, INTERPRISE",
+            "commercial_register" => "sometimes|required_if:type_account, INTERPRISE",
+            "address" => "sometimes|required_if:type_account, INTERPRISE",
+            "web_site" => "sometimes|required_if:type_account, INTERPRISE",
+           "description" => "sometimes|required_if:type_account, INTERPRISE",
         ];
     }
 }

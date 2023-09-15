@@ -166,11 +166,19 @@ class UserController extends Controller
      *
      * @param  \App\Http\Requests\UpdateUserRequest  $request
      * @param  \App\Models\User  $user
-     * @return \Illuminate\Http\Response
      */
     public function update(UpdateUserRequest $request, User $user)
     {
-        //
+        //$this->authorize('update', $user);
+
+        $input = $request->validated();
+
+        $data = UserService::update($user, $input);
+
+        return response()->json([
+            'code' => 201,
+            'data' => $data
+        ]);
     }
 
     /**
