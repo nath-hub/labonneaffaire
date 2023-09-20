@@ -15,14 +15,47 @@ use App\Services\Facades\UserFacade as UserService;
  */
 class UserController extends Controller
 {
+
     /**
-     * Display a listing of the resource.
+     * @OA\Get(
+     *     path="/api/users",
+     *      operationId="index",
+     *      tags={"User"},
+     *      summary="Get User",
+     *      description="Get User",
      *
-     * @return \Illuminate\Http\Response
+     *       @OA\Response(
+     *      response=201,
+     *      description="Success response",
+     *      @OA\JsonContent(
+     *      @OA\Property(property="status", type="number", example="200"),
+     *      @OA\Property(property="message", type="string", example="affichage d'un utilisateur."),
+     *        )
+     *     ),
+     *        @OA\Response(
+     *      response=400,
+     *      description="Bad Request",
+     *      @OA\JsonContent(
+     *      @OA\Property(property="status", type="number", example="400"),
+     *      @OA\Property(property="message", type="string", example="Erreur lors du traitement de la demande")
+     *        )
+     *     ),
+     * @OA\Response(
+     *      response=500,
+     *      description="Bad Request",
+     *      @OA\JsonContent(
+     *      @OA\Property(property="status", type="number", example="500"),
+     *      @OA\Property(property="message", type="string", example="Erreur de connexion")
+     *        )
+     *     )
+     * )
+     *      
+     * )
      */
     public function index()
     {
-        //
+
+        return User::where('type_account', 'ENTERPRISE')->get();
     }
 
     /**
@@ -151,6 +184,7 @@ class UserController extends Controller
      */
     public function show(User $user)
     {
+
         $this->authorize('view', $user);
 
         $data = UserService::view($user);
@@ -162,18 +196,131 @@ class UserController extends Controller
     }
 
     /**
-     * Update the specified resource in storage.
+     * @OA\Put(
+     *     path="/api/users/{id}",
+     *      operationId="update",
+     *      tags={"User"},
+     *      summary="Update User",
+     *      description="Update User",
+     *      @OA\Parameter(
+     *      name="id",
+     *      in="path",
+     *      required=true,
+     *      description= "user id",
+     *      example="10",
+     *      @OA\Schema(
+     *           type="integer"
+     *      )
+     * ),
      *
-     * @param  \App\Http\Requests\UpdateUserRequest  $request
-     * @param  \App\Models\User  $user
+     *       @OA\Response(
+     *      response=201,
+     *      description="Success response",
+     *      @OA\JsonContent(
+     *      @OA\Property(property="status", type="number", example="200"),
+     *      @OA\Property(property="message", type="string", example="reponse de la modification"),
+     *        )
+     *     ),
+     *        @OA\Response(
+     *      response=400,
+     *      description="Bad Request",
+     *      @OA\JsonContent(
+     *      @OA\Property(property="status", type="number", example="400"),
+     *      @OA\Property(property="message", type="string", example="Erreur lors du traitement de la demande")
+     *        )
+     *     ),
+     * @OA\Response(
+     *      response=500,
+     *      description="Bad Request",
+     *      @OA\JsonContent(
+     *      @OA\Property(property="status", type="number", example="500"),
+     *      @OA\Property(property="message", type="string", example="Erreur de connexion")
+     *        )
+     *     )
+     * )
+     *      
+     * )
      */
     public function update(UpdateUserRequest $request, User $user)
     {
         //$this->authorize('update', $user);
 
+        if ($user->email_verified_at === null) {
+            return response()->json([
+                'code' => 401,
+                'error' => 'Account not validate in email',
+                'message' => 'Account is not validate, verify your email',
+            ], 401);
+        } else {
+
+            $input = $request->validated();
+
+            $data = UserService::update($user, $input);
+
+            return response()->json([
+                'code' => 201,
+                'data' => $data
+            ]);
+        }
+    }
+
+    /**
+     * @OA\Post(
+     *      path="/api/users/send-email",
+     *      operationId="sendEmail",
+     *      tags={"User"},
+     *      summary="send email for verify",
+     *      description="verify email",
+     *      @OA\RequestBody(
+     *      required=true,
+     *      description="Verification de l'email d'un utilisateur",
+     *
+     *      @OA\MediaType(
+     *            mediaType="multipart/form-data",
+     *            @OA\Schema(
+     *               type="object",
+     *    @OA\Property(property="email", type="string", format="string", example="examples@gmail.com", description ="votre email"),
+     *  )
+     *        ),
+     *      ),
+     *       @OA\Response(
+     *      response=201,
+     *      description="Success response",
+     *      @OA\JsonContent(
+     *      @OA\Property(property="status", type="number", example="200"),
+     *      @OA\Property(property="message", type="string", example="Verification de l'email."),
+     *        )
+     *     ),
+     *        @OA\Response(
+     *      response=400,
+     *      description="Bad Request",
+     *      @OA\JsonContent(
+     *      @OA\Property(property="status", type="number", example="400"),
+     *      @OA\Property(property="message", type="string", example="Erreur lors du traitement de la demande")
+     *        )
+     *     ),
+     * @OA\Response(
+     *      response=500,
+     *      description="Bad Request",
+     *      @OA\JsonContent(
+     *      @OA\Property(property="status", type="number", example="500"),
+     *      @OA\Property(property="message", type="string", example="Erreur de connexion")
+     *        )
+     *     )
+     * )
+     *      
+     * )
+     */
+    public function sendEmail(UpdateUserRequest $request, User $user)
+    {
+        //permet de recuperer l'adresse mail de l'utilisateur pour verifier si le compte 
+        // l'appartient afin qu'il modifie sont mot de passe ou en cas de mot de passe oublier
+
+        $this->authorize('sendEmail', $user);
+
         $input = $request->validated();
 
-        $data = UserService::update($user, $input);
+        $data = UserService::sendEmail($user, $input);
 
         return response()->json([
             'code' => 201,
@@ -182,13 +329,181 @@ class UserController extends Controller
     }
 
     /**
-     * Remove the specified resource from storage.
+     * @OA\Put(
+     *      path="/api/users/update-verification-email",
+     *      operationId="verification",
+     *      tags={"User"},
+     *      summary="update state of user who verify her email",
+     *      description="verify email",
+     *      @OA\RequestBody(
+     *      required=true,
+     *      description="Verification de l'email d'un utilisateur",
      *
-     * @param  \App\Models\User  $user
-     * @return \Illuminate\Http\Response
+     *      @OA\MediaType(
+     *            mediaType="multipart/form-data",
+     *            @OA\Schema(
+     *               type="object",
+     *    @OA\Property(property="email", type="string", format="string", example="examples@gmail.com", description ="votre email"),
+     *  )
+     *        ),
+     *      ),
+     *       @OA\Response(
+     *      response=201,
+     *      description="Success response",
+     *      @OA\JsonContent(
+     *      @OA\Property(property="status", type="number", example="200"),
+     *      @OA\Property(property="message", type="string", example="Verification de l'email."),
+     *        )
+     *     ),
+     *        @OA\Response(
+     *      response=400,
+     *      description="Bad Request",
+     *      @OA\JsonContent(
+     *      @OA\Property(property="status", type="number", example="400"),
+     *      @OA\Property(property="message", type="string", example="Erreur lors du traitement de la demande")
+     *        )
+     *     ),
+     * @OA\Response(
+     *      response=500,
+     *      description="Bad Request",
+     *      @OA\JsonContent(
+     *      @OA\Property(property="status", type="number", example="500"),
+     *      @OA\Property(property="message", type="string", example="Erreur de connexion")
+     *        )
+     *     )
+     * )
+     *      
+     * )
+     */
+    public function verification(User $user)
+    {
+
+        //bouton modifier dans le compte de l'utilisateur 
+
+        $this->authorize('sendCode', $user);
+
+        $data = UserService::verification($user);
+
+        return response()->json([
+            'code' => 201,
+            'data' => $data
+        ]);
+    }
+
+    /**
+     * @OA\Put(
+     *      path="/api/users/update-password",
+     *      operationId="updatePassword",
+     *      tags={"User"},
+     *      summary="update password",
+     *      description="update password",
+     *      @OA\RequestBody(
+     *      required=true,
+     *      description="modification du mot de passe d'un utilisateur",
+     *
+     *      @OA\MediaType(
+     *            mediaType="multipart/form-data",
+     *            @OA\Schema(
+     *               type="object",
+     *    @OA\Property(property="email", type="string", format="string", example="examples@gmail.com", description ="votre email"),
+     *  )
+     *        ),
+     *      ),
+     *       @OA\Response(
+     *      response=201,
+     *      description="Success response",
+     *      @OA\JsonContent(
+     *      @OA\Property(property="status", type="number", example="200"),
+     *      @OA\Property(property="message", type="string", example="modification du mot de passe."),
+     *        )
+     *     ),
+     *        @OA\Response(
+     *      response=400,
+     *      description="Bad Request",
+     *      @OA\JsonContent(
+     *      @OA\Property(property="status", type="number", example="400"),
+     *      @OA\Property(property="message", type="string", example="Erreur lors du traitement de la demande")
+     *        )
+     *     ),
+     * @OA\Response(
+     *      response=500,
+     *      description="Bad Request",
+     *      @OA\JsonContent(
+     *      @OA\Property(property="status", type="number", example="500"),
+     *      @OA\Property(property="message", type="string", example="Erreur de connexion")
+     *        )
+     *     )
+     * )
+     *      
+     * )
+     */
+    public function updatePassword(UpdateUserRequest $request, User $user)
+    {
+
+        if ($user->email_verified_at === null) {
+            return response()->json([
+                'code' => 401,
+                'error' => 'Account not validate in email',
+                'message' => 'Account is not validate, verify your email',
+            ], 401);
+        } else {
+
+            $input = $request->validated();
+
+            return UserService::updatePassword($input, $user);
+        }
+    }
+
+    /**
+     * @OA\Delete(
+     *      path="/api/users/users",
+     *      operationId="destroy",
+     *      tags={"User"},
+     *      summary="delete password",
+     *      description="delete password",
+     *      
+     *       @OA\Response(
+     *      response=201,
+     *      description="Success response",
+     *      @OA\JsonContent(
+     *      @OA\Property(property="status", type="number", example="200"),
+     *      @OA\Property(property="message", type="string", example="modification du mot de passe."),
+     *        )
+     *     ),
+     *        @OA\Response(
+     *      response=400,
+     *      description="Bad Request",
+     *      @OA\JsonContent(
+     *      @OA\Property(property="status", type="number", example="400"),
+     *      @OA\Property(property="message", type="string", example="Erreur lors du traitement de la demande")
+     *        )
+     *     ),
+     * @OA\Response(
+     *      response=500,
+     *      description="Bad Request",
+     *      @OA\JsonContent(
+     *      @OA\Property(property="status", type="number", example="500"),
+     *      @OA\Property(property="message", type="string", example="Erreur de connexion")
+     *        )
+     *     )
+     * )
+     *      
+     * )
      */
     public function destroy(User $user)
     {
-        //
+        if ($user->email_verified_at === null) {
+            return response()->json([
+                'code' => 401,
+                'error' => 'Account not validate in email',
+                'message' => 'Account is not validate, verify your email',
+            ], 401);
+        } else {
+            UserService::delete($user);
+
+            return response()->json([
+                'message' => 'users successfull delete'
+            ], 202);
+        }
     }
 }

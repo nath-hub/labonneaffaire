@@ -5,7 +5,9 @@ namespace App\Services;
 
 use Illuminate\Support\Facades\Hash;
 use App\Models\User;
-use Mail;
+use Carbon\Carbon;
+use Illuminate\Support\Facades\Mail;
+ 
 
 class UserService
 {
@@ -54,4 +56,55 @@ class UserService
 
         return $state;
     }
+
+    public function verification($user){
+        
+       $user->email_verified_at = Carbon::now();
+
+       $state = $user->update();
+
+       return $state;
+       
+    }
+
+    public function sendEmail($user, $input){
+
+        $user = User::where('email', $input['email'])->get();
+
+        if (isset($user)) {
+
+            $email = $user[0]->email;
+
+            Mail::send('mailVerification', ['verify' => $user[0]->id], function ($message) use ($email) {
+                $message->to($email);
+                $message->subject("E-mail de verification");
+            });
+
+            return [
+                "statut" => 200, "data" => $user
+            ];
+        }
+
+        return [];
+    }
+
+      /**
+     * Update a user
+     * 
+     * @param User $user the a user who updates his data
+     * @param array $input The user data
+     * 
+     */
+    public function updatePassword($dataToUpdate, $user)
+    {
+
+        if (isset($dataToUpdate['password'])) {
+            $dataToUpdate['password'] = Hash::make($dataToUpdate['password']);
+        }
+
+        $user->update($dataToUpdate);
+
+        return response()->json([], 204);
+    }
+
 }

@@ -23,11 +23,28 @@ class UpdateUserRequest extends FormRequest
      */
     public function rules()
     {
+
+        $routeName = $this->route()->getName();
+
+        if ($routeName === 'updatePassword') {
+            return [
+                'password' => 'required|string',
+            ];
+        } elseif ($routeName === 'sendEmail') {
+            return [
+                "email" => "required|email|string",
+            ];
+        }elseif($routeName === 'sendCode'){
+            return [
+                'code' => "required|integer"
+            ];
+        }
+
         return [
             "first_name" => "sometimes|required|string",
             "last_name" => "sometimes|required|string",
             "country" => "sometimes|required|string",
-            "town" =>"sometimes|required|string",
+            "town" => "sometimes|required|string",
             "type_account" => "sometimes|required|string",
 
             "birth_date" => "string",
@@ -37,7 +54,7 @@ class UpdateUserRequest extends FormRequest
             "commercial_register" => "sometimes|required_if:type_account, INTERPRISE",
             "address" => "sometimes|required_if:type_account, INTERPRISE",
             "web_site" => "sometimes|required_if:type_account, INTERPRISE",
-           "description" => "sometimes|required_if:type_account, INTERPRISE",
+            "description" => "sometimes|required_if:type_account, INTERPRISE",
         ];
     }
 }

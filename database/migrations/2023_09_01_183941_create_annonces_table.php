@@ -16,6 +16,7 @@ return new class extends Migration
         Schema::create('annonces', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('comment_id');
+            $table->unsignedBigInteger('user_id');
             $table->string("title");
             $table->integer("price");
             $table->string("size")->nullable();
@@ -34,8 +35,10 @@ return new class extends Migration
             $table->enum('state_annonce', ['VALIDATE', 'REJECTED', "BLOCKED", "UNPROCESSED"]);
             
             $table->index(["comment_id"], "fk_annonce_comment");
+            $table->index(["user_id"], "fk_annonce_user");
 
             $table->foreign('comment_id')->references('id')->on('comments');
+            $table->foreign('user_id')->references('id')->on('users');
 
             $table->softDeletes();
             $table->timestamps();

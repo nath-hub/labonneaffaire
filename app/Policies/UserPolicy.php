@@ -15,7 +15,7 @@ class UserPolicy
      * @param  \App\Models\User  $user
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function viewAny(User $user)
+    public function viewAny(?User $user)
     {
         //
     }
@@ -56,6 +56,29 @@ class UserPolicy
     public function update(User $user, User $model)
     {
         $user->id === $model->user;
+    }
+    
+    
+    /**
+     * Determine whether the user can send the email.
+     *
+     * @param  \App\Models\User  $user
+     * @return \Illuminate\Auth\Access\Response|bool
+     */
+    public function sendEmail(?user $user)
+    {
+        return true;
+    }
+
+     /**
+     * Determine whether the user can send the email.
+     *
+     * @param  \App\Models\User  $user
+     * @return \Illuminate\Auth\Access\Response|bool
+     */
+    public function sendCode(?user $user)
+    {
+        return true;
     }
 
     /**

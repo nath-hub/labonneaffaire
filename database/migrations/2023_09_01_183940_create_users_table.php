@@ -15,11 +15,11 @@ return new class extends Migration
     {
         Schema::create('users', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('annonce_id')->nullable();
             $table->string('first_name');
             $table->string('last_name');
-            $table->string('town');
-            $table->string('country');
+            $table->string('town')->nullable();
+            $table->string('code')->nullable();
+            $table->string('country')->nullable();
             $table->string('phone')->unique();
             $table->string('email')->unique();
             $table->string('avatar')->nullable();
@@ -36,11 +36,6 @@ return new class extends Migration
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
             $table->rememberToken();
-
-
-            $table->index(["annonce_id"], "fk_users_annonce");
-
-            $table->foreign('annonce_id')->references('id')->on('annonces');
 
             $table->softDeletes();
             $table->timestamps();

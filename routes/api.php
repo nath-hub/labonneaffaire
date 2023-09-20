@@ -22,4 +22,16 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 Route::apiResource('users', UserController::class);
 
+Route::put('update-password/{user}', [UserController::class, 'updatePassword'])->name('updatePassword');
+
+Route::post('send-email', [UserController::class, 'sendEmail'])->name('sendEmail');
+
+Route::post('send-code', [UserController::class, 'sendCode'])->name('sendCode');
+
+Route::put('update-password/{user}', [UserController::class, 'updatePassword'])->name('updatePassword');
+
+Route::put('update-verification-email/{user}', [UserController::class, 'verification'])->name('verification');
+
 Route::post('login', [AuthController::class, 'login'])->name('login');
+
+Route::post('logout/{user}', [AuthController::class, 'logout'])->name('logout');

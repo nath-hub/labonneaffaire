@@ -25,7 +25,7 @@
           </div>
     
     
-          <p>&copy; 2023 <a href="labonneaffaire.com" >bill'lib</a></p>
+          <p>&copy; 2023 <a href="labonneaffaire.com" >Labonneaffaire</a></p>
         </div>
       </div>
 </body>
