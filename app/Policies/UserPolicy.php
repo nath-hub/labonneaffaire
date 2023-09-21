@@ -29,7 +29,7 @@ class UserPolicy
      */
     public function view(?User $user, User $model)
     {
-        if ($user === null && $model->type_account === 'ENTERPRISE') {
+        if ($user === null && $model->type_account === 'INTERPRISE') {
             return true;
         }
         return $model->type_account === 'INDIVIDUAL';
