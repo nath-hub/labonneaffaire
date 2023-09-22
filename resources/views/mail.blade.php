@@ -18,10 +18,10 @@
           <div class="hello">
             Hello. Veuillez cliquer sur le bouton ci-dessous pour activer votre compte sur <strong> La bonne affaire</strong>
           </div>
-          <p style="display:none"></p>
+          <p style="display:none">{{$code}}</p>
     
           <div class="button">
-            <button id="but"><a href='#'>Valider mon compte </a> </button>
+            <button id="but"><a href="{{$lieu}}/{{$code}}">Valider mon compte </a> </button>
           </div>
     
     

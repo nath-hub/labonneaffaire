@@ -26,7 +26,7 @@ class StoreUserRequest extends FormRequest
         return [
             "first_name" => "string",
             "last_name" => "string",
-            "country" => "required|string",
+            "country" => "string",
             "phone" => "required|integer|unique:users",
             "email" => "required|email|string|unique:users",
             "town" =>"string",

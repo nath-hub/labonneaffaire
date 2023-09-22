@@ -92,7 +92,7 @@
       <p style="display:none">{{$verify}}</p>
 
       <div class="button">
-        <button id="but"><a href='http://labonneaffaire.test/api/update-verification-email/{{$verify}}'>Valider mon compte </a> </button>
+        <button id="but"><a href="{{$lieu}}/{{$code}}">Valider mon compte </a> </button>
       </div>
 
 

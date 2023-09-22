@@ -25,7 +25,9 @@ class UserService
 
         $state = User::create($input);
 
-        Mail::send('mail', ['code' => $state->id], function ($message) use ($input) {
+        $lieu = asset('/api/update-verification-email/');
+
+        Mail::send('mail', ['code' => $state->id, "lieu" => $lieu], function ($message) use ($input) {
             $message->to($input['email']);
             $message->subject("E-mail de validation");
         });
@@ -61,10 +63,8 @@ class UserService
         
        $user->email_verified_at = Carbon::now();
 
-       $state = $user->update();
+       $user->update();
 
-       return $state;
-       
     }
 
     public function sendEmail($user, $input){
@@ -105,6 +105,18 @@ class UserService
         $user->update($dataToUpdate);
 
         return response()->json([], 204);
+    }
+
+    /**
+     * Delete a user
+     * 
+     * @param array $input The user id
+     * 
+     * @return void
+     */
+    public function delete($userToDelete)
+    {
+        $userToDelete->delete();
     }
 
 }

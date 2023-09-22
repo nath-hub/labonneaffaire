@@ -54,7 +54,7 @@ class UserController extends Controller
      */
     public function index()
     {
-
+       
         return User::all();
     }
 
@@ -382,12 +382,9 @@ class UserController extends Controller
 
         $this->authorize('sendCode', $user);
 
-        $data = UserService::verification($user);
+        UserService::verification($user);
 
-        return response()->json([
-            'code' => 201,
-            'data' => $data
-        ]);
+        return view('welcome');
     }
 
     /**

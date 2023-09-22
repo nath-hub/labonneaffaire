@@ -30,7 +30,7 @@ Route::post('send-code', [UserController::class, 'sendCode'])->name('sendCode');
 
 Route::put('update-password/{user}', [UserController::class, 'updatePassword'])->name('updatePassword');
 
-Route::put('update-verification-email/{user}', [UserController::class, 'verification'])->name('verification');
+Route::get('update-verification-email/{user}', [UserController::class, 'verification'])->name('verification');
 
 Route::post('login', [AuthController::class, 'login'])->name('login');
 
