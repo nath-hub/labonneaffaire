@@ -55,7 +55,7 @@ class UserController extends Controller
     public function index()
     {
 
-        return User::where('type_account', 'INTERPRISE')->get();
+        return User::all();
     }
 
     /**
