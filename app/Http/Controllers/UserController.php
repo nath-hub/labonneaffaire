@@ -124,8 +124,9 @@ class UserController extends Controller
      */
     public function store(StoreUserRequest $request)
     {
-        $this->authorize('create', User::class);
+        $tt = $this->authorize('create', User::class);
 
+        
         $input = $request->validated();
 
         $data = UserService::store($input);
@@ -189,6 +190,10 @@ class UserController extends Controller
 
         $data = UserService::view($user);
 
+        if($data === ''){
+            abort(400, "This data don't exists");
+        }
+
         return response()->json([
             'code' => 201,
             'data' => $data
@@ -243,7 +248,7 @@ class UserController extends Controller
      */
     public function update(UpdateUserRequest $request, User $user)
     {
-        //$this->authorize('update', $user);
+        // $this->authorize('update', $user);
 
         if ($user->email_verified_at === null) {
             return response()->json([
@@ -387,6 +392,64 @@ class UserController extends Controller
         return view('welcome');
     }
 
+      /**
+     * @OA\Post(
+     *      path="/api/users/avatar",
+     *      operationId="uploadAvatar",
+     *      tags={"User"},
+     *      summary="upload avatar file",
+     *      description="upload avatar file",
+     *      @OA\RequestBody(
+     *      required=true,
+     *      description="Telechargement du profil utilisateur",
+     *
+     *      @OA\MediaType(
+     *            mediaType="multipart/form-data",
+     *            @OA\Schema(
+     *               type="object",
+     *      @OA\Property(property="avatar", type="file", format="image", example="https://image.png", description ="votre photos de profil"),   
+     *  )
+     *        ),
+     *      ),
+     *    @OA\Response(
+     *      response=200,
+     *      description="success",
+     *      @OA\JsonContent(
+     *      @OA\Property(property="avatar_path", type="string", example="users/avatar/ghRfjbiJHOvnMBaeerGTwCbYxV0WEnRuRPFod9N3.jpg"),
+     * @OA\Property(property="avatar_url", type="string", example="http://labonneaffaire.test/users/avatar/ghRfjbiJHOvnMBaeerGTwCbYxV0WEnRuRPFod9N3.jpg",
+     *
+     *        
+     * )
+     *     ),
+     *    @OA\Response(
+     *      response=400,
+     *      description="Bad Request",
+     *      @OA\JsonContent(
+     *      @OA\Property(property="status", type="number", example="400"),
+     *      @OA\Property(property="message", type="string", example="Erreur lors du traitement de la demande")
+     *        )
+     *     ),
+     * @OA\Response(
+     *      response=500,
+     *      description="Bad Request",
+     *      @OA\JsonContent(
+     *      @OA\Property(property="status", type="number", example="500"),
+     *      @OA\Property(property="message", type="string", example="Erreur de connexion")
+     *        )
+     *     )
+     * )
+     *      
+     * )
+     */
+    public function uploadAvatar(StoreUserRequest $request, User $user)
+    {
+        $this->authorize('uploadAvatar', $user);
+
+        $data = UserService::uploadAvatar($request->file('avatar'));
+
+        return response()->json($data, 200);
+    }
+
     /**
      * @OA\Put(
      *      path="/api/users/update-password",
@@ -496,9 +559,7 @@ class UserController extends Controller
                 'message' => 'Account is not validate, verify your email',
             ], 401);
         } else {
-            UserService::delete($user);
-
-            return response()->json([
+           return response()->json([
                 'message' => 'users successfull delete'
             ], 202);
         }

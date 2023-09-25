@@ -14,6 +14,245 @@
     },
     "paths": {
         "/users/{user}": {},
+        "/api/annonces": {
+            "get": {
+                "tags": [
+                    "Annonce"
+                ],
+                "summary": "Get all annonces",
+                "description": "Get all annonces",
+                "operationId": "inde",
+                "responses": {
+                    "201": {
+                        "description": "Success response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "number",
+                                            "example": "200"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "affichage des annonces."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "number",
+                                            "example": "400"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Erreur lors du traitement de la demande"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Bad Request",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "number",
+                                            "example": "500"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Erreur de connexion"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Annonce"
+                ],
+                "summary": "Register",
+                "description": "Register",
+                "operationId": "stores",
+                "requestBody": {
+                    "description": "Enregistrement d'une annonce",
+                    "required": true,
+                    "content": {
+                        "multipart/form-data": {
+                            "schema": {
+                                "properties": {
+                                    "title": {
+                                        "description": "votre title *",
+                                        "type": "string",
+                                        "format": "string",
+                                        "example": "la porte"
+                                    },
+                                    "size": {
+                                        "description": "votre size",
+                                        "type": "string",
+                                        "format": "string",
+                                        "example": "M"
+                                    },
+                                    "images": {
+                                        "description": "images de vos produits *",
+                                        "type": "string",
+                                        "format": "images",
+                                        "example": "image.png"
+                                    },
+                                    "description": {
+                                        "description": "votre description *",
+                                        "type": "string",
+                                        "format": "string",
+                                        "example": "long texte"
+                                    },
+                                    "state_product": {
+                                        "description": "l'etat de votre produits *",
+                                        "type": "string",
+                                        "format": "string",
+                                        "example": "NEUF"
+                                    },
+                                    "color": {
+                                        "description": "color de votre produit",
+                                        "type": "string",
+                                        "format": "string",
+                                        "example": "bleu"
+                                    },
+                                    "localization": {
+                                        "description": "votre localization *",
+                                        "type": "string",
+                                        "format": "string",
+                                        "example": "yaounde"
+                                    },
+                                    "price": {
+                                        "description": "votre price *",
+                                        "type": "string",
+                                        "format": "string",
+                                        "example": "16000"
+                                    },
+                                    "option_discutable": {
+                                        "description": "votre option *",
+                                        "type": "string",
+                                        "format": "string",
+                                        "example": "OUI"
+                                    },
+                                    "date_publish": {
+                                        "description": "date publication *",
+                                        "type": "string",
+                                        "format": "string",
+                                        "example": "date_publish"
+                                    },
+                                    "job_type": {
+                                        "description": "type de votre produit",
+                                        "type": "string",
+                                        "format": "string",
+                                        "example": "pantalon"
+                                    },
+                                    "categorie_id": {
+                                        "description": "nom de categorie *",
+                                        "type": "integer",
+                                        "format": "string",
+                                        "example": "1"
+                                    },
+                                    "availability": {
+                                        "description": "votre availability *",
+                                        "type": "string",
+                                        "format": "string",
+                                        "example": "INDISPONIBLE"
+                                    },
+                                    "state_annonce": {
+                                        "description": "etat de votre annonce *",
+                                        "type": "string",
+                                        "format": "string",
+                                        "example": "VALIDATE"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Success response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "number",
+                                            "example": "200"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Annonce bien Creer."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "number",
+                                            "example": "400"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Erreur lors du traitement de la demande"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Bad Request",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "number",
+                                            "example": "500"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Erreur de connexion"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
         "/api/login": {
             "post": {
                 "tags": [
@@ -782,6 +1021,57 @@
                                         "message": {
                                             "type": "string",
                                             "example": "Erreur de connexion"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/users/avatar": {
+            "post": {
+                "tags": [
+                    "User"
+                ],
+                "summary": "upload avatar file",
+                "description": "upload avatar file",
+                "operationId": "uploadAvatar",
+                "requestBody": {
+                    "description": "Telechargement du profil utilisateur",
+                    "required": true,
+                    "content": {
+                        "multipart/form-data": {
+                            "schema": {
+                                "properties": {
+                                    "avatar": {
+                                        "description": "votre photos de profil",
+                                        "type": "file",
+                                        "format": "image",
+                                        "example": "https://image.png"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "success",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "avatar_path": {
+                                            "type": "string",
+                                            "example": "users/avatar/ghRfjbiJHOvnMBaeerGTwCbYxV0WEnRuRPFod9N3.jpg"
+                                        },
+                                        "avatar_url": {
+                                            "type": "string",
+                                            "example": "http://labonneaffaire.test/users/avatar/ghRfjbiJHOvnMBaeerGTwCbYxV0WEnRuRPFod9N3.jpg"
                                         }
                                     },
                                     "type": "object"

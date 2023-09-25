@@ -32,7 +32,7 @@ class UserPolicy
         if ($user === null && $model->type_account === 'INTERPRISE') {
             return true;
         }
-        return $model->type_account === 'INDIVIDUAL';
+        return $model->type_account === 'INDIVIDUAL' || $model->type_account === 'INTERPRISE';
     }
 
     /**
@@ -59,6 +59,14 @@ class UserPolicy
     }
     
     
+     /**
+     * check if an user can upload a file
+     */
+    public function uploadAvatar(User $user)
+    {
+        return true;
+    }
+
     /**
      * Determine whether the user can send the email.
      *

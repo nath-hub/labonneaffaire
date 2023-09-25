@@ -3,8 +3,10 @@
 namespace App\Services;
 
 
+use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Hash;
 use App\Models\User;
+use App\Models\UserDelete;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Mail;
  
@@ -43,7 +45,9 @@ class UserService
      */
     public function view($user)
     {
-        return $user;
+        
+           return $user; 
+              
     }
 
     /**
@@ -88,6 +92,28 @@ class UserService
         return [];
     }
 
+
+
+
+       /**
+     * Upload user avatar
+     * 
+     * @param UploadedFile $avatarFile The avatar file
+     * 
+     * @return array
+     */
+    public function uploadAvatar(UploadedFile $avatarFile): array
+    {
+
+        $avatarPath = $avatarFile->store('users/avatar', 'public');
+
+        return [
+            'avatar_path' => $avatarPath,
+            'avatar_url' => asset($avatarPath),
+        ];
+    }
+
+
       /**
      * Update a user
      * 
@@ -116,7 +142,33 @@ class UserService
      */
     public function delete($userToDelete)
     {
-        $userToDelete->delete();
+        
+        $user = new UserDelete();
+        $user->first_name = $userToDelete['first_name'];
+        $user->last_name = $userToDelete['last_name'];
+        $user->email = $userToDelete['email'];
+        $user->town = $userToDelete['email'];
+        $user->code = $userToDelete['code'];
+        $user->country = $userToDelete['country'];
+        $user->phone = $userToDelete['phone'];
+        $user->avatar = $userToDelete['avatar'];
+        $user->birth_date = $userToDelete['birth_date'];
+        $user->role = $userToDelete['role'];
+        $user->type_account = $userToDelete['type_account'];
+        $user->siren = $userToDelete['siren'];
+        $user->commercial_register = $userToDelete['commercial_register'];
+        $user->name_enterprise = $userToDelete['name_enterprise'];
+        $user->address = $userToDelete['address'];
+        $user->web_site = $userToDelete['web_site'];
+        $user->description = $userToDelete['description'];
+        $user->password = $userToDelete['password'];
+        $user->state = $userToDelete['state'];
+        $user->email_verified_at = $userToDelete['email_verified_at'];
+        $user->date_delete = Carbon::now();
+
+        $user->save();
+
+        return $userToDelete->delete();
     }
 
 }

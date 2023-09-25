@@ -23,6 +23,14 @@ class StoreUserRequest extends FormRequest
      */
     public function rules()
     {
+        $routeName = $this->route()->getName();
+
+        if($routeName === 'users.avatar'){
+            return [
+                "avatar"=> "required|image",
+            ];
+        }
+
         return [
             "first_name" => "string",
             "last_name" => "string",
@@ -36,6 +44,7 @@ class StoreUserRequest extends FormRequest
             "role" => "string",
             "state" => "required|string",
             "birth_date" => "string",
+            "avatar"=> "string",
 
             "name_enterprise" => "sometimes|required_if:type_account, INTERPRISE",
             "siren" => "sometimes|required_if:type_account, INTERPRISE",

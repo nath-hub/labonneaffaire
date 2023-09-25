@@ -15,14 +15,10 @@ return new class extends Migration
     {
         Schema::create('categories', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('annonce_id');
             $table->string("name_category");
             $table->string("name_subcategory_1");
             $table->string("name_subcategory_2")->nullable();
 
-            $table->index(["annonce_id"], "fk_categories_annonce");
-
-            $table->foreign('annonce_id')->references('id')->on('annonces');
 
             $table->softDeletes();
             $table->timestamps();

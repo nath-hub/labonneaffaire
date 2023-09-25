@@ -13,17 +13,18 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('users', function (Blueprint $table) {
+        Schema::create('user_deletes', function (Blueprint $table) {
             $table->id();
             $table->string('first_name');
             $table->string('last_name');
-            $table->string('email')->unique();
+            $table->string('email');
             $table->string('town')->nullable();
             $table->string('code')->nullable();
             $table->string('country')->nullable();
-            $table->string('phone')->unique();
+            $table->string('phone')->nullable();
             $table->string('avatar')->nullable();
             $table->date('birth_date')->nullable();
+            $table->date('date_delete')->nullable();
             $table->enum('role', ["ADMIN", "USER"]);
             $table->enum('type_account', ['INDIVIDUAL', 'INTERPRISE']);
             $table->string('siren')->nullable();
@@ -37,6 +38,7 @@ return new class extends Migration
             $table->string('password');
             $table->rememberToken();
 
+            $table->softDeletes();
             $table->timestamps();
         });
     }
@@ -48,10 +50,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('users');
-        
-        Schema::table('users', function (Blueprint $table) {
-            $table->dropSoftDeletes();
-        });
+        Schema::dropIfExists('user_deletes');
     }
 };
